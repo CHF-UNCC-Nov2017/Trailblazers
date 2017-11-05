@@ -1,0 +1,51 @@
+#metadata: information about the flow
+#  platformVersion: the version of the bots platform that this flow was written to work with 
+metadata:
+  platformVersion: 1.0
+main: true
+name: TestBot
+#context: Define the variables which will used throughout the dialog flow here.
+context:
+  variables:
+#The syntax for defining the variables is variablename: "variableType".
+# The "variableType" can be defined as a primitive type ("int", "string", "boolean"), "list", or an entity name. A variable can also hold the results returned by the Intent Engine. For these variables, the "variableType" must be "nlpresult" (for example, iResult: "nlpresult").
+    greeting: "string"
+    name: "string"
+    digitalProfile : "string"
+#states is where you can define the various states within your flow.
+# The syntax for defining a state is
+# statename:
+#   component:Specify the component you want to use. This can be either a Built-In or custom component.
+#   properties:
+#     property1: "value" (These are the properties to the specified component
+#   transitions: You can specify one of the following four
+#     next: Specify the state you want to execute next after this state. By default it will execute the state specified after this
+#     error: Specify the state you want to execute in case the component encounters any error in execution.
+#     actions: You can handle various actions returned by the components here the syntax is actionName: "statename"
+#        action1: state1
+#     return: "done" You can exit the flow using the return statement
+
+states:
+  askGreeting:
+    component: "System.List"
+    properties:
+      options: "Open Account!, Know about offers"
+      prompt: "Hi How may I help you?"
+      variable: "greeting"
+  askName:
+    component: "System.Text"
+    properties:
+     prompt: "Please send Name, SSN Number, Passport, Address, Phone number, Email in sequence?"
+     variable: "name"
+  askDigitalProfile:
+    component: "System.List"
+    properties:
+      options: "Yes,No"
+      prompt: "Would you like to authorize access to your Digital Profile?"
+      variable: "digitalProfile"   
+  start:
+    component: "System.Output"
+    properties:
+      text: " Welcome ${name.value}. ${greeting.value} successful"
+    transitions:
+      return: "done"
